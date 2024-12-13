@@ -9,26 +9,26 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ted.gun0912.manual.di.domain.DataResource
 import ted.gun0912.manual.di.domain.GetMovieListUseCase
+import ted.gun0912.manual.di.domain.GetMovieUseCase
 import ted.gun0912.manual.di.ui.model.toPresentation
 
 class MovieViewModel(
-    private val getMovieListUseCase: GetMovieListUseCase
+    private val getMovieListUseCase: GetMovieListUseCase,
+    private val getMovieUseCase: GetMovieUseCase,
 ) : ViewModel() {
-
     private val _uiState = MutableStateFlow(MovieUiState.DEFAULT)
     val uiState = _uiState.asStateFlow()
 
     init {
         fetchMovies()
     }
-    
+
     private fun fetchMovies() {
         viewModelScope.launch {
             getMovieListUseCase()
                 .onCompletion {
                     _uiState.update { it.copy(isLoading = false) }
-                }
-                .collect({ dataResource ->
+                }.collect({ dataResource ->
                     when (dataResource) {
                         is DataResource.Success ->
                             _uiState.update { uiState ->
@@ -41,5 +41,4 @@ class MovieViewModel(
                 })
         }
     }
-
 }
