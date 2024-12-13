@@ -2,6 +2,7 @@ package ted.gun0912.manual.di.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.onCompletion
@@ -11,8 +12,10 @@ import ted.gun0912.manual.di.domain.DataResource
 import ted.gun0912.manual.di.domain.GetMovieListUseCase
 import ted.gun0912.manual.di.domain.GetMovieUseCase
 import ted.gun0912.manual.di.ui.model.toPresentation
+import javax.inject.Inject
 
-class MovieViewModel(
+@HiltViewModel
+class MovieViewModel @Inject constructor(
     private val getMovieListUseCase: GetMovieListUseCase,
     private val getMovieUseCase: GetMovieUseCase,
 ) : ViewModel() {
